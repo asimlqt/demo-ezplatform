@@ -1,0 +1,45 @@
+version: '3'
+services:
+  ez:
+    build:
+      context: .
+      args:
+        - GITHUB_TOKEN
+    volumes:
+      - .:/app
+    links:
+      - database
+    environment:
+      DATABASE_HOST: database
+      DATABASE_NAME: ezdemo
+      DATABASE_USER: admin
+      DATABASE_PASSWORD: secret
+      DATABASE_ROOT_PASSWORD: secret
+      SYMFONY_SECRET: abcde
+    expose:
+      - 443
+
+  piwik:
+    image: quay.io/continuouspipe/piwik:latest
+    links:
+    - database
+    expose:
+    - 443
+
+  proxy:
+    image: quay.io/continuouspipe/nginx-reverse-proxy:stable
+    depends_on:
+     - ez
+     - piwik
+    environment:
+      PROXY_LOCATIONS: '[{"location": "/", "backend": "https://ez", "preserve_host": true}, {"location": "/piwik", "backend": "https://piwik", "preserve_host": true}]'
+    ports:
+    - '443:443'
+
+  database:
+    image: quay.io/continuouspipe/mysql5.6:stable
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: ezdemo
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: secret
