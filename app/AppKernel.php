@@ -51,7 +51,6 @@ class AppKernel extends Kernel
             new Bazinga\Bundle\JsTranslationBundle\BazingaJsTranslationBundle(),
             new JMS\TranslationBundle\JMSTranslationBundle(),
             new \Kaliop\eZMigrationBundle\EzMigrationBundle(),
-            new AppBundle\AppBundle(),
         );
 
         switch ($this->getEnvironment()) {

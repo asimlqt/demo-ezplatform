@@ -6,10 +6,6 @@ login_check:
 logout:
     path:   /logout
 
-hello:
-    path:      /hello
-    defaults:  { _controller: AppBundle:Hello:index }
-
 _ezpublishRoutes:
     resource: "@EzPublishCoreBundle/Resources/config/routing/internal.yml"
 
