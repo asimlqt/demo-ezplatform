@@ -7,6 +7,17 @@ variables:
   - name: SYMFONY_ENV
     value: prod
 
+pipelines:
+  - name: Production
+    condition: 'not(code_reference.branch matches "#^cpdev/#")'
+    tasks: [ images, storage, setup, deployment ]
+  - name: Remote
+    condition: 'code_reference.branch matches "#^cpdev/#"'
+    tasks: [ images, storage, setup, deployment ]
+    variables:
+      - name: SYMFONY_ENV
+        value: dev
+
 tasks:
   images:
     build:
@@ -93,18 +104,16 @@ tasks:
             environment_variables: &WEB_ENV_VARS
               - name: SYMFONY_ENV
                 value: ${SYMFONY_ENV}
-              - name: DATABASE_HOST
-                value: database
               - name: DATABASE_NAME
-                value: ezdemo
+                value: ${DATABASE_NAME}
               - name: DATABASE_USER
-                value: admin
+                value: ${DATABASE_USER}
               - name: DATABASE_PASSWORD
-                value: secret
+                value: ${DATABASE_PASSWORD}
               - name: DATABASE_ROOT_PASSWORD
-                value: secret
+                value: ${DATABASE_ROOT_PASSWORD}
               - name: SYMFONY_SECRET
-                value: abcde
+                value: ${SYMFONY_SECRET}
 
   setup:
     run:
@@ -114,14 +123,3 @@ tasks:
         - container setup
       environment_variables:
         <<: *WEB_ENV_VARS
-
-pipelines:
-  - name: Production
-    condition: 'not(code_reference.branch matches "#^cpdev/#")'
-    tasks: [ images, storage, setup, deployment ]
-  - name: Remote
-    condition: 'code_reference.branch matches "#^cpdev/#"'
-    tasks: [ images, storage, setup, deployment ]
-    variables:
-      - name: SYMFONY_ENV
-        value: dev
