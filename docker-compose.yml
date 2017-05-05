@@ -19,20 +19,12 @@ services:
     expose:
       - 443
 
-  piwik:
-    image: quay.io/continuouspipe/piwik:latest
-    links:
-    - database
-    expose:
-    - 443
-
   proxy:
     image: quay.io/continuouspipe/nginx-reverse-proxy:stable
     depends_on:
      - ez
-     - piwik
     environment:
-      PROXY_LOCATIONS: '[{"location": "/", "backend": "https://ez", "preserve_host": true}, {"location": "/piwik", "backend": "https://piwik", "preserve_host": true}]'
+      PROXY_LOCATIONS: '[{"location": "/", "backend": "https://ez", "preserve_host": true}]'
     ports:
     - '443:443'
 

@@ -105,11 +105,6 @@ tasks:
                 value: secret
               - name: SYMFONY_SECRET
                 value: abcde
-                
-        piwik:
-          specification:
-            ports:
-              - 443
 
   setup:
     run:
