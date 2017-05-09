@@ -22,7 +22,7 @@ tasks:
   images:
     build:
       services:
-        ez:
+        web:
           image: quay.io/inviqa_images/ez-platform-demo
           naming_strategy: sha1
 
@@ -91,13 +91,15 @@ tasks:
               - name: AUTH_HTTP_HTPASSWD
                 value: ${AUTH_HTTP_HTPASSWD}
               - name: AUTH_IP_WHITELIST_ENABLED
-                value: true
+                value: "true"
               - name: AUTH_IP_WHITELIST
                 value: ${AUTH_IP_WHITELIST}
               - name: TRUSTED_REVERSE_PROXIES
                 value: ${TRUSTED_REVERSE_PROXIES}
+              - name: WEB_REVERSE_PROXIED
+                value: "true"
 
-        ez:
+        web:
           specification:
             ports:
               - 443
@@ -118,7 +120,7 @@ tasks:
   setup:
     run:
       image:
-        from_service: ez
+        from_service: web
       commands:
         - container setup
       environment_variables:
