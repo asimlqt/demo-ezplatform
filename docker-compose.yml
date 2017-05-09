@@ -16,7 +16,7 @@ services:
       DATABASE_PASSWORD: secret
       DATABASE_ROOT_PASSWORD: secret
       SYMFONY_SECRET: abcde
-      WEB_HTTPS_OFFLOADED: "true"
+      WEB_HTTPS_ONLY: "true"
       WEB_REVERSE_PROXIED: "true"
     expose:
       - 443
