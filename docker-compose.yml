@@ -1,6 +1,6 @@
 version: '3'
 services:
-  ez:
+  web:
     build:
       context: .
       args:
@@ -16,6 +16,8 @@ services:
       DATABASE_PASSWORD: secret
       DATABASE_ROOT_PASSWORD: secret
       SYMFONY_SECRET: abcde
+      WEB_HTTPS_OFFLOADED: "true"
+      WEB_REVERSE_PROXIED: "true"
     expose:
       - 443
 
@@ -24,7 +26,7 @@ services:
     depends_on:
      - ez
     environment:
-      PROXY_LOCATIONS: '[{"location": "/", "backend": "https://ez", "preserve_host": true}]'
+      PROXY_LOCATIONS: '[{"location": "/", "backend": "https://web", "preserve_host": true}]'
     ports:
     - '443:443'
 
